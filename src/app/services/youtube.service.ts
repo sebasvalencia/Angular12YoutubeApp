@@ -15,12 +15,16 @@ export class YoutubeService {
   getVideos() {
 
     const url = `${this.youtubeUrl}/playlistItems`;
-    let params = new URLSearchParams();
+    const params = new URLSearchParams();
 
     params.set('part', 'snippet');
     params.set('maxResults', '10');
     params.set('playlistId', this.playlist);
     params.set('key', this.apiKey);
+
+    if (this.nextPageToken) {
+      params.set('pageToken', this.nextPageToken);
+    }
 
     return this.http.get(url, { search: params })
       .map(res => {
